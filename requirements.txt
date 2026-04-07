@@ -1,0 +1,6 @@
+Flask
+python-dotenv
+pdfkit
+PyMySQL
+cryptography
+ 

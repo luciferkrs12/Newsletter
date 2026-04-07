@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add User</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    background: linear-gradient(180deg, #eef2ff, #f8fafc);
+}
+
+.sidebar {
+    width: 240px;
+    background: #1e3c72;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px 20px;
+    min-height: 100vh;
+}
+
+.sidebar .logo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.sidebar .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: #2563eb;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.sidebar h2 {
+    font-size: 20px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    text-decoration: none;
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.14);
+    transform: translateX(2px);
+}
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.container {
+    flex: 1;
+    margin-left: 240px;
+    padding: 32px;
+}
+
+.page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.page-heading h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #111827;
+}
+
+.top-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    background: #2563eb;
+    color: white;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background 0.2s ease;
+}
+
+.top-action-btn:hover {
+    background: #1d4ed8;
+}
+
+.form-box {
+    background: white;
+    padding: 30px;
+    max-width: 520px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.form-box.hidden {
+    display: none;
+}
+
+.form-box label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.flash-container {
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.flash-message.success {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-color: #7dd3fc;
+}
+
+.form-box input,
+.form-box select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 15px;
+    transition: border-color 0.2s ease;
+}
+
+.form-box input:focus,
+.form-box select:focus {
+    border-color: #2563eb;
+}
+
+.form-box button {
+    width: 100%;
+    padding: 14px 16px;
+    margin-top: 24px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.cancel-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.user-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.inline-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.inline-form select {
+    min-width: 120px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+}
+
+.small-btn {
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.small-btn.delete {
+    background: #ef4444;
+}
+
+.small-btn.reset {
+    background: #f59e0b;
+}
+
+.small-btn.role {
+    background: #2563eb;
+}
+
+.edit-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    background: #0ea5e9;
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.user-list-box {
+    margin-top: 32px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    padding: 24px;
+}
+
+.user-list-box h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #111827;
+}
+
+.user-list-box table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.user-list-box th,
+.user-list-box td {
+    text-align: left;
+    padding: 14px 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.user-list-box th {
+    color: #475569;
+    font-weight: 700;
+}
+
+.user-list-box tr:last-child td {
+    border-bottom: none;
+}
+
+.user-list-box td {
+    color: #334155;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div>
+        <div class="logo-title">
+            <div class="logo-mark">N</div>
+            <div>
+                <h2>Newsletter</h2>
+                <p style="font-size:13px; color:#cbd5e1; margin:4px 0 0;">College Portal</p>
+            </div>
+        </div>
+
+        <a class="nav-item" href="/dashboard">🏠 Dashboard</a>
+        <a class="nav-item" href="/editor">✍️ Create Newsletter</a>
+        <a class="nav-item" href="/add-user">👤 Add User</a>
+    </div>
+
+    <a class="logout-btn" href="/logout">🚪 Logout</a>
+</div>
+
+<div class="container">
+    <div class="page-heading">
+        <div>
+            <h1>Create User</h1>
+            <a class="top-action-btn" id="show-user-form-btn" href="#">Add User</a>
+        </div>
+        <div class="user-badge">Logged in as {{session['user']}}</div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="form-box {% if not edit_user %}hidden{% endif %}" id="create-user-form">
+        <form method="POST" action="{% if edit_user %}{{ url_for('edit_user', user_id=edit_user[0]) }}{% else %}{{ url_for('add_user') }}{% endif %}">
+            {% if not edit_user %}
+            <input type="hidden" name="action" value="create">
+            {% endif %}
+
+            <label>Username</label>
+            <input name="username" type="text" required value="{{ edit_user[1] if edit_user else '' }}">
+
+            <label>Password</label>
+            <input name="password" type="password" required value="{{ edit_user[2] if edit_user else '' }}">
+
+            <label>Role</label>
+            <select name="role">
+                <option value="user" {% if edit_user and edit_user[3] == 'user' %}selected{% endif %}>User</option>
+                <option value="admin" {% if edit_user and edit_user[3] == 'admin' %}selected{% endif %}>Admin</option>
+            </select>
+
+            <button type="submit">{% if edit_user %}Update User{% else %}Create User{% endif %}</button>
+            {% if edit_user %}
+            <a class="cancel-link" href="/add-user">Cancel edit</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="user-list-box">
+        <h2>Existing Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>{{ user[2] }}</td>
+                    <td>
+                        <div class="user-actions">
+                            <a class="edit-link" href="{{ url_for('edit_user', user_id=user[0]) }}">Edit</a>
+                            <form method="POST" action="{{ url_for('add_user') }}" class="inline-form">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="user_id" value="{{ user[0] }}">
+                                <button type="submit" class="small-btn delete">Delete</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('add_user') }}" class="inline-form">
+                                <input type="hidden" name="action" value="reset_password">
+                                <input type="hidden" name="user_id" value="{{ user[0] }}">
+                                <button type="submit" class="small-btn reset">Reset PW</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const showFormBtn = document.getElementById('show-user-form-btn');
+    showFormBtn?.addEventListener('click', function(event) {
+        event.preventDefault();
+        const formBox = document.getElementById('create-user-form');
+        if (formBox) {
+            formBox.classList.remove('hidden');
+            formBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+</script>
+
+</body>
+</html>

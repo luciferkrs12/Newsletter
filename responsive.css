@@ -1,0 +1,19 @@
+body {
+  max-width: 800px;
+  margin: auto;
+}
+input, textarea {
+  width: 100%;
+  margin: 10px 0;
+}
+
+body {
+  max-width: 900px;
+  margin: auto;
+}
+
+@media (max-width: 768px) {
+  .columns {
+    column-count: 1;
+  }
+}
