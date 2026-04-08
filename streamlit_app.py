@@ -32,6 +32,8 @@ from backend.config import (
 
 def generate_pdf(data):
     pdf = FPDF()
+    pdf.set_margins(15, 15, 15)  # Set margins to 15mm to match original
+    pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
     # Cover page
