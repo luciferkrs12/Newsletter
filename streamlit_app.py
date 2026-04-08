@@ -83,7 +83,8 @@ def generate_pdf(data):
     add_section_page('Dakshaa Events', data[12] or '')
     add_section_page('Guest Lecture', data[13] or '')
     add_section_page('Celebration', data[14] or '')
-    add_section_page('Editorial & Summary', f'Editorial Board\n\n{data[15] or ""}\n\nSummary\n\n{data[16] or ""}')
+    add_section_page('Editorial', data[15] or '')
+    add_section_page('Summary', data[16] or '')
 
     # Last page
     pdf.add_page()
