@@ -31,69 +31,10 @@ from backend.config import (
 )
 
 def generate_pdf(data):
-    pdf = FPDF()
-    pdf.set_margins(15, 15, 15)  # Set margins to 15mm to match original
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
-
-    # Cover page
-    pdf.set_font('Times', 'B', 24)
-    pdf.set_text_color(30, 60, 114)  # #1e3c72
-    pdf.cell(0, 10, 'ENVISION BULLETIN', 0, 1, 'C')
-    pdf.set_font('Times', '', 12)
-    pdf.set_text_color(85, 85, 85)
-    pdf.cell(0, 10, f'Monthly Newsletter - {data[1] or ""} {data[2] or ""}', 0, 1, 'C')
-    pdf.ln(10)
-    pdf.set_font('Times', '', 12)
-    pdf.set_text_color(0, 0, 0)
-    chairman_text = data[3] or 'Chairman Message content goes here.'
-    pdf.multi_cell(0, 6, chairman_text)
-
-    # Add image if exists
-    if data[18] and os.path.exists(data[18]):
-        pdf.ln(10)
-        try:
-            pdf.image(data[18], x=10, w=50)
-        except:
-            pass  # Skip if image error
-
-    # Function to add section page
-    def add_section_page(title, content):
-        pdf.add_page()
-        pdf.set_font('Times', 'B', 18)
-        pdf.set_text_color(30, 60, 114)
-        pdf.cell(0, 10, title, 0, 1)
-        pdf.set_font('Times', '', 10)
-        pdf.set_text_color(85, 85, 85)
-        pdf.cell(0, 10, f'ENVISION BULLETIN | {data[1] or ""} {data[2] or ""}', 0, 1, 'R')
-        pdf.ln(5)
-        pdf.set_font('Times', '', 12)
-        pdf.set_text_color(0, 0, 0)
-        pdf.multi_cell(0, 6, content or '')
-
-    # Messages page
-    add_section_page('Messages', f'Chairman Message\n\n{data[3] or ""}\n\nPrincipal Message\n\n{data[4] or ""}')
-
-    # Other sections
-    add_section_page('Table of Contents', data[5] or '')
-    add_section_page('Events Organized', data[6] or '')
-    add_section_page('Training & Placement', data[7] or '')
-    add_section_page('Workshop', data[8] or '')
-    add_section_page('Student Achievements', data[9] or '')
-    add_section_page('Seminar / Webinar', data[10] or '')
-    add_section_page('Faculty Achievements', data[11] or '')
-    add_section_page('Dakshaa Events', data[12] or '')
-    add_section_page('Guest Lecture', data[13] or '')
-    add_section_page('Celebration', data[14] or '')
-    add_section_page('Editorial', data[15] or '')
-    add_section_page('Summary', data[16] or '')
-
-    # Last page
-    pdf.add_page()
-    pdf.set_font('Times', '', 14)
-    pdf.cell(0, 10, data[17] or '"Education is the movement from darkness to light"', 0, 1, 'C')
-
-    return pdf.output(dest='S').encode('latin-1')
+    html = template.render(data=data)
+    config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+    pdf_bytes = pdfkit.from_string(html, False, configuration=config, options={"enable-local-file-access": None})
+    return pdf_bytes
 
 def send_email(subject: str, body: str, recipient: str):
     message = EmailMessage()
@@ -124,7 +65,7 @@ st.set_page_config(page_title="Newsletter Portal", layout="wide")
 # Sidebar navigation
 if 'user' in st.session_state:
     st.sidebar.title(f"Welcome, {st.session_state['user']}")
-    page = st.sidebar.radio("Navigation", ["Dashboard", "Editor", "Add User", "Logout"])
+    page = st.sidebar.radio("Navigation", ["Dashboard", "Editor", "Add User", "Template Editor", "Logout"])
 else:
     page = "Login"
 
@@ -367,3 +308,17 @@ elif page == "Add User":
             conn.close()
             st.success("User added")
             st.rerun()
+
+elif page == "Template Editor":
+    st.title("Template Editor")
+    # Load current template
+    with open(BASE_DIR / "templates" / "template_base.html", "r") as f:
+        current_template = f.read()
+    new_template = st.text_area("Edit Template HTML", value=current_template, height=600)
+    if st.button("Save Template"):
+        with open(BASE_DIR / "templates" / "template_base.html", "w") as f:
+            f.write(new_template)
+        # Reload template
+        global template
+        template = Template(new_template)
+        st.success("Template saved and reloaded")

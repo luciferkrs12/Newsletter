@@ -108,6 +108,7 @@ body {
     <div class="sub-header">Monthly Newsletter - {{data[1]}} {{data[2]}}</div>
   </div>
   <div class="text">{{data[3] or 'Chairman Message content goes here.'}}</div>
+  {% if data[18] %}<img src="file://{{data[18]}}" style="max-width: 50mm; display: block; margin: 10px auto;" alt="Newsletter Image">{% endif %}
 </div>
 
 <!-- PAGE 2 - MESSAGES -->
