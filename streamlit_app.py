@@ -4,12 +4,12 @@ from backend.config import get_db_connection, param_style
 from backend.db import init_db as initialize_database
 import os
 from pathlib import Path
-import pdfkit
 from io import BytesIO
 from datetime import datetime, timedelta
 import smtplib
 import secrets
 from email.message import EmailMessage
+from fpdf import FPDF
 
 # Initialize database
 conn = get_db_connection()
@@ -22,7 +22,6 @@ UPLOAD_FOLDER = BASE_DIR / "static" / "uploads"
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
 from backend.config import (
-    WKHTMLTOPDF_PATH,
     SMTP_HOST,
     SMTP_PORT,
     SMTP_SECURE,
@@ -30,6 +29,68 @@ from backend.config import (
     SMTP_PASS,
     SMTP_FROM,
 )
+
+def generate_pdf(data):
+    pdf = FPDF()
+    pdf.add_page()
+
+    # Cover page
+    pdf.set_font('Times', 'B', 24)
+    pdf.set_text_color(30, 60, 114)  # #1e3c72
+    pdf.cell(0, 10, 'ENVISION BULLETIN', 0, 1, 'C')
+    pdf.set_font('Times', '', 12)
+    pdf.set_text_color(85, 85, 85)
+    pdf.cell(0, 10, f'Monthly Newsletter - {data[1] or ""} {data[2] or ""}', 0, 1, 'C')
+    pdf.ln(10)
+    pdf.set_font('Times', '', 12)
+    pdf.set_text_color(0, 0, 0)
+    chairman_text = data[3] or 'Chairman Message content goes here.'
+    pdf.multi_cell(0, 6, chairman_text)
+
+    # Add image if exists
+    if data[18] and os.path.exists(data[18]):
+        pdf.ln(10)
+        try:
+            pdf.image(data[18], x=10, w=50)
+        except:
+            pass  # Skip if image error
+
+    # Function to add section page
+    def add_section_page(title, content):
+        pdf.add_page()
+        pdf.set_font('Times', 'B', 18)
+        pdf.set_text_color(30, 60, 114)
+        pdf.cell(0, 10, title, 0, 1)
+        pdf.set_font('Times', '', 10)
+        pdf.set_text_color(85, 85, 85)
+        pdf.cell(0, 10, f'ENVISION BULLETIN | {data[1] or ""} {data[2] or ""}', 0, 1, 'R')
+        pdf.ln(5)
+        pdf.set_font('Times', '', 12)
+        pdf.set_text_color(0, 0, 0)
+        pdf.multi_cell(0, 6, content or '')
+
+    # Messages page
+    add_section_page('Messages', f'Chairman Message\n\n{data[3] or ""}\n\nPrincipal Message\n\n{data[4] or ""}')
+
+    # Other sections
+    add_section_page('Table of Contents', data[5] or '')
+    add_section_page('Events Organized', data[6] or '')
+    add_section_page('Training & Placement', data[7] or '')
+    add_section_page('Workshop', data[8] or '')
+    add_section_page('Student Achievements', data[9] or '')
+    add_section_page('Seminar / Webinar', data[10] or '')
+    add_section_page('Faculty Achievements', data[11] or '')
+    add_section_page('Dakshaa Events', data[12] or '')
+    add_section_page('Guest Lecture', data[13] or '')
+    add_section_page('Celebration', data[14] or '')
+    add_section_page('Editorial & Summary', f'Editorial Board\n\n{data[15] or ""}\n\nSummary\n\n{data[16] or ""}')
+
+    # Last page
+    pdf.add_page()
+    pdf.set_font('Times', '', 14)
+    pdf.cell(0, 10, data[17] or '"Education is the movement from darkness to light"', 0, 1, 'C')
+
+    return pdf.output(dest='S').encode('latin-1')
 
 def send_email(subject: str, body: str, recipient: str):
     message = EmailMessage()
@@ -172,10 +233,8 @@ elif page == "Dashboard":
                 newsletter_data = c.fetchone()
                 conn.close()
                 if newsletter_data:
-                    html = st.session_state.get('template_html', '<html><body>Newsletter</body></html>')  # Need to load template
-                    config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
-                    pdf_bytes = pdfkit.from_string(html, False, configuration=config, options={"enable-local-file-access": None})
-                    st.download_button("Download PDF", pdf_bytes, f"newsletter_{selected}.pdf", "application/pdf")
+                    pdf_bytes = generate_pdf(newsletter_data)
+                    st.download_button("Download PDF", pdf_bytes, f"newsletter_{selected}.pdf", "application/pdf", key="download_pdf")
         with col2:
             if st.button("Edit"):
                 st.session_state['edit_id'] = selected

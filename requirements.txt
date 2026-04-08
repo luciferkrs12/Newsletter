@@ -6,4 +6,5 @@ cryptography
 streamlit
 requests
 jinja2
+fpdf
  
