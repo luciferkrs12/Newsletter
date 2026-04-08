@@ -5,4 +5,5 @@ PyMySQL
 cryptography
 streamlit
 requests
+jinja2
  
