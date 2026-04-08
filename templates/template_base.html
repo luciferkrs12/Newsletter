@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Envision Bulletin</title>
+<style>
+
+@page {
+  size: A4;
+  margin: 15mm;
+}
+
+body {
+  font-family: "Times New Roman", serif;
+  color: #222;
+}
+
+.header {
+  text-align: center;
+  border-bottom: 3px solid #1e3c72;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  color: #1e3c72;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.sub-header {
+  font-size: 12px;
+  color: #555;
+}
+
+.page {
+  page-break-after: always;
+  padding: 10px;
+}
+
+.page:last-child {
+  page-break-after: avoid;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+}
+
+.page-header .title {
+  font-size: 18px;
+  color: #1e3c72;
+  font-weight: bold;
+}
+
+.page-header .meta {
+  font-size: 10px;
+  color: #555;
+}
+
+.section-title {
+  color: #1e3c72;
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+.text {
+  text-align: justify;
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.columns {
+  display: flex;
+  gap: 20px;
+}
+
+.image-frame {
+  flex: 1;
+  border: 4px solid #1e3c72;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.image-frame img {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.footer {
+  text-align: right;
+  font-size: 10px;
+  color: #555;
+  margin-top: 24px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 - COVER -->
+<div class="page">
+  <div class="header">
+    <h1>ENVISION BULLETIN</h1>
+    <div class="sub-header">Monthly Newsletter - {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[3] or 'Chairman Message content goes here.'}}</div>
+</div>
+
+<!-- PAGE 2 - MESSAGES -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Messages</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+
+  <h2 class="section-title">Chairman Message</h2>
+  <div class="text">{{data[3]}}</div>
+
+  <h2 class="section-title">Principal Message</h2>
+  <div class="text">{{data[4]}}</div>
+</div>
+
+<!-- PAGE 3 - CONTENTS -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Table of Contents</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[5]}}</div>
+</div>
+
+<!-- PAGE 4 - EVENTS -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Events Organized</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[6]}}</div>
+</div>
+
+<!-- PAGE 5 - TRAINING / PLACEMENT -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Training & Placement</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[7]}}</div>
+</div>
+
+<!-- PAGE 6 - WORKSHOP -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Workshop</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[8]}}</div>
+</div>
+
+<!-- PAGE 7 - STUDENT ACHIEVEMENTS -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Student Achievements</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[9]}}</div>
+</div>
+
+<!-- PAGE 8 - SEMINAR / WEBINAR -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Seminar / Webinar</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[10]}}</div>
+</div>
+
+<!-- PAGE 9 - FACULTY ACHIEVEMENTS -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Faculty Achievements</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[11]}}</div>
+</div>
+
+<!-- PAGE 10 - DAKSHAA EVENTS -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Dakshaa Events</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[12]}}</div>
+</div>
+
+<!-- PAGE 11 - GUEST LECTURE -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Guest Lecture</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[13]}}</div>
+</div>
+
+<!-- PAGE 12 - CELEBRATION -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Celebration</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <div class="text">{{data[14]}}</div>
+</div>
+
+<!-- PAGE 13 - EDITORIAL & SUMMARY -->
+<div class="page">
+  <div class="page-header">
+    <div class="title">Editorial & Summary</div>
+    <div class="meta">ENVISION BULLETIN | {{data[1]}} {{data[2]}}</div>
+  </div>
+  <h2 class="section-title">Editorial Board</h2>
+  <div class="text">{{data[15]}}</div>
+  <h2 class="section-title">Summary</h2>
+  <div class="text">{{data[16]}}</div>
+</div>
+
+<!-- LAST PAGE -->
+<div class="page">
+  <h3>{{data[17] or '“Education is the movement from darkness to light”'}}</h3>
+</div>
+
+</body>
+</html>

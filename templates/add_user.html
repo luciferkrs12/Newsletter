@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Add User</title>
+<title> Newsletter Editor </title>
+<link rel="icon" type="image/png" href="/static/Brand_logo.png">
 
 <style>
 * {
@@ -15,392 +15,421 @@
 body {
     min-height: 100vh;
     display: flex;
-    background: linear-gradient(180deg, #eef2ff, #f8fafc);
+    background: linear-gradient(180deg, #f3f7ff 0%, #eef2ff 100%);
+    color: #1f2937;
 }
 
 .sidebar {
-    width: 240px;
-    background: #1e3c72;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 32px 20px;
+    width: 260px;
     min-height: 100vh;
-}
-
-.sidebar .logo-title {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 30px;
-}
-
-.sidebar .logo-mark {
-    width: 40px;
-    height: 40px;
-    background: #2563eb;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.sidebar h2 {
-    font-size: 20px;
-}
-
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    background: linear-gradient(180deg, #1e3c72, #2a5298);
     color: white;
-    text-decoration: none;
-    padding: 14px 16px;
-    border-radius: 14px;
-    margin-bottom: 12px;
-    transition: background 0.25s ease, transform 0.25s ease;
+    padding: 26px 24px;
+    position: fixed;
 }
 
-.nav-item:hover {
-    background: rgba(255,255,255,0.14);
-    transform: translateX(2px);
+.logo-title {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 32px;
 }
 
-.logout-btn {
-    display: inline-flex;
+.logo-mark {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    padding: 14px;
-    background: #ef4444;
+}
+
+.logo-mark img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}
+
+.logo-title h3 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.menu a {
+    display: block;
+    padding: 14px 14px;
+    margin: 10px 0;
     color: white;
-    border: none;
-    border-radius: 14px;
     text-decoration: none;
-    font-weight: 700;
+    border-radius: 12px;
+    transition: background 0.25s ease;
 }
 
-.container {
-    flex: 1;
-    margin-left: 240px;
-    padding: 32px;
+.menu a:hover {
+    background: rgba(255,255,255,0.16);
 }
 
-.page-heading {
+.logout {
+    position: absolute;
+    bottom: 24px;
+    width: calc(100% - 48px);
+    background: #ef4444;
+    text-align: center;
+    padding: 14px;
+    border-radius: 14px;
+}
+
+.logout a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.main {
+    margin-left: 280px;
+    padding: 36px;
+    width: calc(100% - 280px);
+}
+
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 28px;
-}
-
-.page-heading h1 {
-    margin: 0;
-    font-size: 32px;
-    color: #111827;
-}
-
-.top-action-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 20px;
-    background: #2563eb;
-    color: white;
-    border-radius: 16px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: background 0.2s ease;
-}
-
-.top-action-btn:hover {
-    background: #1d4ed8;
-}
-
-.form-box {
-    background: white;
-    padding: 30px;
-    max-width: 520px;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
-}
-
-.form-box.hidden {
-    display: none;
-}
-
-.form-box label {
-    display: block;
-    margin-top: 18px;
-    margin-bottom: 8px;
-    color: #334155;
-    font-weight: 600;
-}
-
-.flash-container {
-    margin-bottom: 20px;
-}
-
-.flash-message {
-    padding: 14px 18px;
-    border-radius: 16px;
-    font-weight: 600;
-    border: 1px solid transparent;
-}
-
-.flash-message.success {
-    background: #e0f2fe;
-    color: #0369a1;
-    border-color: #7dd3fc;
-}
-
-.form-box input,
-.form-box select {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 16px;
-    border: 1px solid #d1d5db;
-    outline: none;
-    font-size: 15px;
-    transition: border-color 0.2s ease;
-}
-
-.form-box input:focus,
-.form-box select:focus {
-    border-color: #2563eb;
-}
-
-.form-box button {
-    width: 100%;
-    padding: 14px 16px;
-    margin-top: 24px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    font-weight: 700;
-}
-
-.cancel-link {
-    display: inline-block;
-    margin-top: 12px;
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.user-actions {
-    display: flex;
+    gap: 20px;
     flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
 }
 
-.inline-form {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-}
-
-.inline-form select {
-    min-width: 120px;
-    padding: 8px 10px;
-    border-radius: 12px;
-    border: 1px solid #d1d5db;
-}
-
-.small-btn {
-    padding: 8px 10px;
-    border-radius: 12px;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.small-btn.delete {
-    background: #ef4444;
-}
-
-.small-btn.reset {
-    background: #f59e0b;
-}
-
-.small-btn.role {
-    background: #2563eb;
-}
-
-.edit-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 10px;
-    background: #0ea5e9;
-    color: white;
-    border-radius: 12px;
-    text-decoration: none;
-    font-size: 13px;
-}
-
-.user-list-box {
-    margin-top: 32px;
-    background: #ffffff;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
-    padding: 24px;
-}
-
-.user-list-box h2 {
-    margin-top: 0;
-    margin-bottom: 18px;
+.header h2 {
+    font-size: 28px;
     color: #111827;
 }
 
-.user-list-box table {
+.add-btn {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-btn:hover {
+    box-shadow: 0 14px 30px rgba(59,130,246,0.25);
+    transform: translateY(-1px);
+}
+
+.card {
+    background: white;
+    padding: 28px;
+    border-radius: 20px;
+    margin-top: 24px;
+    box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+}
+
+table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.user-list-box th,
-.user-list-box td {
+th {
+    padding: 16px 14px;
     text-align: left;
-    padding: 14px 12px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.user-list-box th {
+    border-bottom: 2px solid #eef2ff;
     color: #475569;
+    font-weight: 600;
+}
+
+td {
+    padding: 16px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #e0f2fe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.action-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
     font-weight: 700;
+    transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.user-list-box tr:last-child td {
-    border-bottom: none;
+.btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
 }
 
-.user-list-box td {
+.role { background: #2563eb; color: white; }
+.reset { background: #f59e0b; color: white; }
+.delete { background: #ef4444; color: white; }
+
+tr:hover {
+    background: #f8fbff;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.55);
+    backdrop-filter: blur(3px);
+    z-index: 50;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content {
+    background: white;
+    padding: 28px;
+    width: min(420px, calc(100% - 40px));
+    margin: auto;
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(15,23,42,0.14);
+    position: relative;
+    top: 10%;
+}
+
+.modal-content h3 {
+    margin-bottom: 18px;
+    font-size: 24px;
+    color: #111827;
+}
+
+.form-field {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    padding: 14px 16px 14px 46px;
+    border-radius: 14px;
+    border: 1px solid #d2d6dc;
+    background: #f8fafc;
+    font-size: 15px;
+    color: #111827;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+}
+
+.form-field .icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #64748b;
+}
+
+.modal-btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.submit-btn,
+.cancel-btn {
+    width: 100%;
+    border-radius: 14px;
+    padding: 12px 0;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.submit-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.cancel-btn {
+    background: #f3f4f6;
     color: #334155;
 }
+
+.submit-btn:hover,
+.cancel-btn:hover {
+    opacity: 0.95;
+}
+
+@media (max-width: 900px) {
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 24px;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto;
+    }
+}
+
+
 </style>
+
+<script>
+function openModal(){
+    document.getElementById("modal").classList.add("active");
+}
+
+function closeModal(){
+    document.getElementById("modal").classList.remove("active");
+}
+
+window.addEventListener("click", function(event) {
+    const modal = document.getElementById("modal");
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+</script>
 
 </head>
 
 <body>
 
+<!-- Sidebar -->
 <div class="sidebar">
+
+<div class="logo-title">
+    <div class="logo-mark"><img src="/static/Brand_logo.png" alt="Logo"></div>
     <div>
-        <div class="logo-title">
-            <div class="logo-mark">N</div>
-            <div>
-                <h2>Newsletter</h2>
-                <p style="font-size:13px; color:#cbd5e1; margin:4px 0 0;">College Portal</p>
+        <h3>Newsletter</h3>
+    </div>
+</div>
+
+<div class="menu">
+    <a href="/dashboard">🏠 Dashboard</a>
+    <a href="/editor">✨ Create</a>
+    <a href="/add-user">👤 Users</a>
+</div>
+
+<div class="logout">
+    <form action="/logout" method="post" style="margin:0;">
+        <button type="submit" style="all: unset; cursor: pointer; color: white; width: 100%; display: block; text-align: center; font-weight: 600;">Logout</button>
+    </form>
+</div>
+
+</div>
+
+<!-- Main -->
+<div class="main">
+
+<div class="header">
+    <h2>User Management</h2>
+    <button class="add-btn" onclick="openModal()">+ Add User</button>
+</div>
+
+<div class="card">
+
+<table>
+<tr>
+    <th>ID</th>
+    <th>Email</th>
+    <th>Role</th>
+    <th>Actions</th>
+</tr>
+
+{% for u in users %}
+<tr>
+    <td>{{u[0]}}</td>
+    <td>{{u[1]}}</td>
+
+    <td>
+        <span class="role-badge">{{u[2]}}</span>
+    </td>
+
+    <td>
+        <div class="action-group">
+
+            <a href="/change-role/{{u[0]}}">
+                <button class="btn role">Role</button>
+            </a>
+
+            <a href="/reset-password/{{u[0]}}">
+                <button class="btn reset">Reset</button>
+            </a>
+
+            <a href="/delete-user/{{u[0]}}" onclick="return confirm('Delete user?')">
+                <button class="btn delete">Delete</button>
+            </a>
+
+        </div>
+    </td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+
+        <h3>Add User</h3>
+
+        <form method="POST">
+            <div class="form-field">
+                <span class="icon">✉️</span>
+                <input name="username" type="email" placeholder="Email" required>
             </div>
-        </div>
 
-        <a class="nav-item" href="/dashboard">🏠 Dashboard</a>
-        <a class="nav-item" href="/editor">✍️ Create Newsletter</a>
-        <a class="nav-item" href="/add-user">👤 Add User</a>
-    </div>
+            <div class="form-field">
+                <span class="icon">🔒</span>
+                <input name="password" type="password" placeholder="Password" required>
+            </div>
 
-    <a class="logout-btn" href="/logout">🚪 Logout</a>
-</div>
+            <div class="form-field">
+                <span class="icon">👤</span>
+                <select name="role">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
 
-<div class="container">
-    <div class="page-heading">
-        <div>
-            <h1>Create User</h1>
-            <a class="top-action-btn" id="show-user-form-btn" href="#">Add User</a>
-        </div>
-        <div class="user-badge">Logged in as {{session['user']}}</div>
-    </div>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="flash-container">
-          {% for category, message in messages %}
-            <div class="flash-message {{ category }}">{{ message }}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
-
-    <div class="form-box {% if not edit_user %}hidden{% endif %}" id="create-user-form">
-        <form method="POST" action="{% if edit_user %}{{ url_for('edit_user', user_id=edit_user[0]) }}{% else %}{{ url_for('add_user') }}{% endif %}">
-            {% if not edit_user %}
-            <input type="hidden" name="action" value="create">
-            {% endif %}
-
-            <label>Username</label>
-            <input name="username" type="text" required value="{{ edit_user[1] if edit_user else '' }}">
-
-            <label>Password</label>
-            <input name="password" type="password" required value="{{ edit_user[2] if edit_user else '' }}">
-
-            <label>Role</label>
-            <select name="role">
-                <option value="user" {% if edit_user and edit_user[3] == 'user' %}selected{% endif %}>User</option>
-                <option value="admin" {% if edit_user and edit_user[3] == 'admin' %}selected{% endif %}>Admin</option>
-            </select>
-
-            <button type="submit">{% if edit_user %}Update User{% else %}Create User{% endif %}</button>
-            {% if edit_user %}
-            <a class="cancel-link" href="/add-user">Cancel edit</a>
-            {% endif %}
+            <div class="modal-btns">
+                <button type="submit" class="submit-btn">Create</button>
+                <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+            </div>
         </form>
-    </div>
 
-    <div class="user-list-box">
-        <h2>Existing Users</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user[0] }}</td>
-                    <td>{{ user[1] }}</td>
-                    <td>{{ user[2] }}</td>
-                    <td>
-                        <div class="user-actions">
-                            <a class="edit-link" href="{{ url_for('edit_user', user_id=user[0]) }}">Edit</a>
-                            <form method="POST" action="{{ url_for('add_user') }}" class="inline-form">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="user_id" value="{{ user[0] }}">
-                                <button type="submit" class="small-btn delete">Delete</button>
-                            </form>
-                            <form method="POST" action="{{ url_for('add_user') }}" class="inline-form">
-                                <input type="hidden" name="action" value="reset_password">
-                                <input type="hidden" name="user_id" value="{{ user[0] }}">
-                                <button type="submit" class="small-btn reset">Reset PW</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </div>
-
-<script>
-    const showFormBtn = document.getElementById('show-user-form-btn');
-    showFormBtn?.addEventListener('click', function(event) {
-        event.preventDefault();
-        const formBox = document.getElementById('create-user-form');
-        if (formBox) {
-            formBox.classList.remove('hidden');
-            formBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    });
-</script>
 
 </body>
 </html>

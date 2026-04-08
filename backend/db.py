@@ -24,6 +24,13 @@ def format_sql(sql: str) -> str:
     return sql
 
 
+def ensure_column(cursor, table: str, column: str, column_type: str):
+    try:
+        cursor.execute(f"ALTER TABLE {table} ADD COLUMN {column} {column_type}")
+    except Exception:
+        pass
+
+
 def create_mysql_database():
     conn = mysql_database_config()
     cursor = conn.cursor()
@@ -50,11 +57,52 @@ def init_db(conn):
         cursor.execute(format_sql("""
             CREATE TABLE IF NOT EXISTS newsletters(
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                title VARCHAR(255),
-                content TEXT,
-                image VARCHAR(255)
+                month VARCHAR(50),
+                year VARCHAR(50),
+                chairman TEXT,
+                principal TEXT,
+                contents TEXT,
+                events TEXT,
+                training TEXT,
+                workshop TEXT,
+                achievements TEXT,
+                seminar TEXT,
+                faculty TEXT,
+                dakshaa TEXT,
+                guest TEXT,
+                celebration TEXT,
+                editorial TEXT,
+                summary TEXT,
+                last_quote TEXT,
+                image VARCHAR(255),
+                created_by VARCHAR(255),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """))
+
+        for column, col_type in [
+            ('month', 'VARCHAR(50)'),
+            ('year', 'VARCHAR(50)'),
+            ('chairman', 'TEXT'),
+            ('principal', 'TEXT'),
+            ('contents', 'TEXT'),
+            ('events', 'TEXT'),
+            ('training', 'TEXT'),
+            ('workshop', 'TEXT'),
+            ('achievements', 'TEXT'),
+            ('seminar', 'TEXT'),
+            ('faculty', 'TEXT'),
+            ('dakshaa', 'TEXT'),
+            ('guest', 'TEXT'),
+            ('celebration', 'TEXT'),
+            ('editorial', 'TEXT'),
+            ('summary', 'TEXT'),
+            ('last_quote', 'TEXT'),
+            ('image', 'VARCHAR(255)'),
+            ('created_by', 'VARCHAR(255)'),
+            ('created_at', 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP'),
+        ]:
+            ensure_column(cursor, 'newsletters', column, col_type)
 
         conn.commit()
         cursor.close()
@@ -72,10 +120,53 @@ def init_db(conn):
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS newsletters(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            content TEXT,
-            image TEXT
+            month TEXT,
+            year TEXT,
+            chairman TEXT,
+            principal TEXT,
+            contents TEXT,
+            events TEXT,
+            training TEXT,
+            workshop TEXT,
+            achievements TEXT,
+            seminar TEXT,
+            faculty TEXT,
+            dakshaa TEXT,
+            guest TEXT,
+            celebration TEXT,
+            editorial TEXT,
+            summary TEXT,
+            last_quote TEXT,
+            image TEXT,
+            created_by TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """)
+    for column, col_type in [
+        ('month', 'TEXT'),
+        ('year', 'TEXT'),
+        ('chairman', 'TEXT'),
+        ('principal', 'TEXT'),
+        ('contents', 'TEXT'),
+        ('events', 'TEXT'),
+        ('training', 'TEXT'),
+        ('workshop', 'TEXT'),
+        ('achievements', 'TEXT'),
+        ('seminar', 'TEXT'),
+        ('faculty', 'TEXT'),
+        ('dakshaa', 'TEXT'),
+        ('guest', 'TEXT'),
+        ('celebration', 'TEXT'),
+        ('editorial', 'TEXT'),
+        ('summary', 'TEXT'),
+        ('last_quote', 'TEXT'),
+        ('image', 'TEXT'),
+        ('created_by', 'TEXT'),
+        ('created_at', 'DATETIME DEFAULT CURRENT_TIMESTAMP'),
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE newsletters ADD COLUMN {column} {col_type}")
+        except Exception:
+            pass
     conn.commit()
     cursor.close()

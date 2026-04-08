@@ -1,199 +1,1142 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Newsletter Editor</title>
+<title>Newsletter Canva Editor</title>
+<link rel="icon" type="image/png" href="/static/Brand_logo.png">
 
 <style>
-body {
+* {
     margin: 0;
-    font-family: "Segoe UI";
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f1f5f9;
     display: flex;
-    height: 100vh;
 }
 
-/* Sidebar */
+/* SIDEBAR */
 .sidebar {
-    width: 220px;
-    background: #1e3c72;
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    background: linear-gradient(180deg, #1e3c72, #2a5298);
     color: white;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px;
 }
 
-/* Tabs */
+.logo-title {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.logo-title h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.logo-title small {
+    display: block;
+    color: rgba(255,255,255,0.75);
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.logo-mark {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.logo-mark img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}
+
+.nav-item {
+    display: block;
+    padding: 12px 14px;
+    margin: 8px 0;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.18);
+}
+
+.logout-btn {
+    background: #ef4444;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: #dc2626;
+}
+
+/* MAIN */
+.main-wrapper {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    display: flex;
+}
+
+/* TABS */
 .tabs {
     width: 220px;
-    background: #f4f6f9;
+    background: #f8fafc;
     padding: 15px;
+    border-right: 1px solid #e5e7eb;
+    min-height: 100vh;
     overflow-y: auto;
 }
 
 .tabs button {
     width: 100%;
-    padding: 10px;
-    margin: 5px 0;
+    padding: 12px;
+    margin: 6px 0;
     border: none;
-    background: white;
+    background: #e2e8f0;
+    border-radius: 10px;
     cursor: pointer;
-    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
 .tabs button:hover {
-    background: #2a5298;
+    background: #cbd5e1;
+}
+
+.tabs button.active {
+    background: #2563eb;
     color: white;
 }
 
-/* Editor */
+/* EDITOR MAIN */
 .editor {
     flex: 1;
-    padding: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
-.section {
+.editor h1 {
+    font-size: 28px;
+    margin-bottom: 24px;
+    color: #111827;
+}
+
+.editor-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* CANVA-STYLE TOOLBAR */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 14px 18px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+    flex-wrap: wrap;
+    border: 1px solid #e5e7eb;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toolbar-divider {
+    width: 1px;
+    height: 24px;
+    background: #e5e7eb;
+    margin: 0 4px;
+}
+
+/* FONT SELECTOR */
+.font-select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    color: #111827;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+
+.font-select:hover {
+    border-color: #2563eb;
+    background: #f0f9ff;
+}
+
+.font-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* FONT SIZE CONTROLS */
+.font-size-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f4f6;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.font-size-input {
+    width: 50px;
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 13px;
+    color: #111827;
+    background: white;
+}
+
+.font-size-input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.size-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111827;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: 1px solid #d1d5db;
+}
+
+.size-btn:hover {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* ICON BUTTONS */
+.toolbar-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111827;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.toolbar-btn:hover {
+    background: #f0f9ff;
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.toolbar-btn.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+.toolbar-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* EXTRA BUTTONS (EFFECTS, ANIMATE, POSITION) */
+.extra-btn {
+    padding: 8px 14px;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #111827;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.extra-btn:hover {
+    background: #f0f9ff;
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+/* EDITOR BOX */
+.editor-box {
+    flex: 1;
+    min-height: 400px;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    outline: none;
+    color: #111827;
+    font-size: 16px;
+    line-height: 1.6;
+    transition: all 0.2s ease;
+    overflow-y: auto;
+}
+
+.editor-box:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.editor-box:empty:before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+}
+
+/* IMAGES IN EDITOR */
+.editor-box img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 16px 0;
+    display: block;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.editor-box img:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* HIDDEN FILE INPUT */
+#image-input {
     display: none;
 }
 
-.section.active {
-    display: block;
+/* IMAGE UPLOAD BUTTON */
+.image-upload-btn {
+    padding: 8px 14px;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #111827;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
 }
 
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+.image-upload-btn:hover {
+    background: #f0f9ff;
+    border-color: #2563eb;
+    color: #2563eb;
 }
 
-.save {
-    background: #2a5298;
+
+/* SAVE BUTTON */
+.save-btn {
+    margin-top: 20px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #2563eb, #1e3c72);
     color: white;
-    padding: 10px;
     border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-end;
+}
+
+.save-btn:hover {
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .toolbar {
+        padding: 12px;
+        gap: 8px;
+    }
+    
+    .toolbar-btn {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+    }
+    
+    .tabs {
+        display: none;
+    }
+    
+    .editor {
+        padding: 20px;
+    }
+    
+    .toolbar {
+        flex-wrap: wrap;
+    }
 }
 </style>
 
 <script>
-function showTab(id){
-    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+// Show/Hide tabs
+function showTab(tabName) {
+    // Hide all sections
+    document.querySelectorAll('.editor-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Remove active class from all tabs
+    document.querySelectorAll('.tabs button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Show selected section
+    const selectedSection = document.getElementById('section-' + tabName);
+    if (selectedSection) {
+        selectedSection.style.display = 'flex';
+    }
+    
+    // Add active class to clicked tab
+    event.target.classList.add('active');
+    
+    // Focus on editor box
+    const editorBox = selectedSection.querySelector('.editor-box');
+    if (editorBox) {
+        setTimeout(() => editorBox.focus(), 100);
+    }
 }
+
+// Initialize editor
+function initEditor() {
+    // Track active formatting buttons for all editors
+    document.addEventListener('selectionchange', updateToolbarState);
+}
+
+// Format text
+function format(command, value = null) {
+    const activeSection = document.querySelector('.editor-section[style*="flex"]');
+    const editorBox = activeSection?.querySelector('.editor-box');
+    if (editorBox) {
+        editorBox.focus();
+        document.execCommand(command, false, value);
+        updateToolbarState();
+    }
+}
+
+// Toggle formatting with button state
+function toggleFormat(command, buttonId) {
+    format(command);
+    const activeSection = document.querySelector('.editor-section[style*="flex"]');
+    const btn = activeSection?.querySelector('#' + buttonId);
+    if (btn && document.queryCommandState(command)) {
+        btn.classList.add('active');
+    } else if (btn) {
+        btn.classList.remove('active');
+    }
+}
+
+// Update toolbar button states
+function updateToolbarState() {
+    const activeSection = document.querySelector('.editor-section[style*="flex"]');
+    const boldBtn = activeSection?.querySelector('#bold-btn');
+    const italicBtn = activeSection?.querySelector('#italic-btn');
+    const underlineBtn = activeSection?.querySelector('#underline-btn');
+    
+    if (boldBtn) boldBtn.classList.toggle('active', document.queryCommandState('bold'));
+    if (italicBtn) italicBtn.classList.toggle('active', document.queryCommandState('italic'));
+    if (underlineBtn) underlineBtn.classList.toggle('active', document.queryCommandState('underline'));
+}
+
+// Font size change
+function changeFontSize(value) {
+    const activeSection = document.querySelector('.editor-section[style*="flex"]');
+    const editorBox = activeSection?.querySelector('.editor-box');
+    if (value && !isNaN(value) && editorBox) {
+        document.execCommand('fontSize', false, '7');
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const span = document.createElement('span');
+            span.style.fontSize = value + 'px';
+            range.surroundContents(span);
+        }
+    }
+}
+
+
+// Handle font size buttons
+function increaseFontSize() {
+    const activeSection = document.querySelector('.editor-section[style*="flex"]');
+    const input = activeSection?.querySelector('.font-size-input');
+    if (input) {
+        input.value = Math.min(120, parseInt(input.value || 16) + 2);
+        changeFontSize(input.value);
+    }
+}
+
+function decreaseFontSize() {
+    const activeSection = document.querySelector('.editor-section[style*="flex"]');
+    const input = activeSection?.querySelector('.font-size-input');
+    if (input) {
+        input.value = Math.max(8, parseInt(input.value || 16) - 2);
+        changeFontSize(input.value);
+    }
+}
+
+// Image insertion
+function insertImage() {
+    const input = document.getElementById('image-input');
+    input.click();
+}
+
+function handleImageUpload(event) {
+    const files = event.target.files;
+    if (!files.length) return;
+    
+    const activeSection = document.querySelector('.editor-section[style*="flex"]');
+    const editorBox = activeSection?.querySelector('.editor-box');
+    if (!editorBox) return;
+    
+    Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '100%';
+            img.style.borderRadius = '12px';
+            img.style.margin = '16px 0';
+            img.style.display = 'block';
+            
+            editorBox.appendChild(img);
+            editorBox.focus();
+        };
+        reader.readAsDataURL(file);
+    });
+    
+    // Reset input
+    event.target.value = '';
+}
+
+// Handle font size input
+document.addEventListener('DOMContentLoaded', () => {
+    // Setup all font size inputs
+    document.querySelectorAll('.font-size-input').forEach(fontSizeInput => {
+        fontSizeInput.addEventListener('change', (e) => {
+            changeFontSize(e.target.value);
+        });
+        fontSizeInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                changeFontSize(e.target.value);
+                const activeSection = document.querySelector('.editor-section[style*="flex"]');
+                const editorBox = activeSection?.querySelector('.editor-box');
+                if (editorBox) editorBox.focus();
+            }
+        });
+    });
+    
+    // Initialize
+    initEditor();
+    
+    // Setup all save buttons
+    document.querySelectorAll('.save-btn').forEach(saveBtn => {
+        saveBtn.addEventListener('click', () => {
+            const content = saveBtn.parentElement.querySelector('.editor-box').innerHTML;
+            alert('Content saved! Length: ' + content.length + ' characters');
+        });
+    });
+});
+
+// Prevent toolbar selection
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.toolbar-btn, .extra-btn, .size-btn').forEach(btn => {
+        btn.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+        });
+    });
+});
 </script>
 
 </head>
 
 <body>
 
-<!-- Sidebar -->
+<!-- HIDDEN FILE INPUT FOR IMAGE UPLOAD -->
+<input type="file" id="image-input" accept="image/*" multiple onchange="handleImageUpload(event)">
+
+<!-- SIDEBAR -->
 <div class="sidebar">
-    <h2>Newsletter</h2>
-    <p>Editor</p>
+    <div>
+        <div class="logo-title">
+            <div class="logo-mark">
+                <img src="/static/Brand_logo.png" alt="Newsletter Logo">
+            </div>
+            <div>
+                <h3>Newsletter</h3>
+                <small>College Portal</small>
+            </div>
+        </div>
+
+        <a class="nav-item" href="/dashboard">🏠 Dashboard</a>
+        <a class="nav-item" href="/editor">✨ Create</a>
+        <a class="nav-item" href="/add-user">👤 Users</a>
+    </div>
+
+    <form action="/logout" method="post">
+        <button class="logout-btn">🚪 Logout</button>
+    </form>
 </div>
 
-<!-- Tabs -->
-<div class="tabs">
+<!-- MAIN -->
+<div class="main-wrapper">
 
-<button onclick="showTab('cover')">Cover</button>
-<button onclick="showTab('chairman')">Chairman</button>
-<button onclick="showTab('principal')">Principal</button>
-<button onclick="showTab('contents')">Contents</button>
-<button onclick="showTab('events')">Events</button>
-<button onclick="showTab('training')">Training</button>
-<button onclick="showTab('workshop')">Workshop</button>
-<button onclick="showTab('achievement')">Achievements</button>
-<button onclick="showTab('seminar')">Seminar</button>
-<button onclick="showTab('dakshaa')">Dakshaa</button>
-<button onclick="showTab('celebration')">Celebration</button>
-<button onclick="showTab('editorial')">Editorial</button>
-<button onclick="showTab('last')">Last Page</button>
+    <!-- TABS -->
+    <div class="tabs">
+        <button data-tab="cover" onclick="showTab('cover')" class="active">📄 Cover</button>
+        <button data-tab="chairman" onclick="showTab('chairman')">👤 Chairman</button>
+        <button data-tab="principal" onclick="showTab('principal')">🎓 Principal</button>
+        <button data-tab="events" onclick="showTab('events')">📌 Events</button>
+        <button data-tab="training" onclick="showTab('training')">💼 Training</button>
+        <button data-tab="editorial" onclick="showTab('editorial')">📝 Editorial</button>
+        <button data-tab="add_page" onclick="showTab('add_page')">➕ Add Page</button>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="editor">
+        <h1>Create Newsletter</h1>
+
+        <!-- COVER SECTION -->
+        <div id="section-cover" class="editor-section" style="display: flex;">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true"><h1 style="text-align: center; font-size: 48px; margin: 40px 0 20px 0; color: #1e3c72;">NEWSLETTER</h1><h2 style="text-align: center; font-size: 28px; margin: 0 0 10px 0; color: #2563eb;">April 2026</h2><p style="text-align: center; font-size: 16px; color: #666; margin: 0;">K.S. Rangasamy College of Technology</p></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+
+        <!-- CHAIRMAN SECTION -->
+        <div id="section-chairman" class="editor-section">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true"><h2>Chairman's Message</h2><p>Dear Students, Faculty, and Staff,</p><p>It is with great pleasure that I present this month's newsletter, celebrating the remarkable achievements and progress of our institution. Our commitment to academic excellence and holistic development continues to drive our mission.</p><p>This month, we highlight:</p><ul><li>Outstanding student achievements</li><li>New initiatives and programs</li><li>Faculty recognition awards</li><li>Campus development projects</li></ul><p>Let us continue working together towards a brighter future.</p><p>Warm regards,</p><p><strong>Chairman Name</strong></p></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+
+        <!-- PRINCIPAL SECTION -->
+        <div id="section-principal" class="editor-section">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true"><h2>Principal's Note</h2><p>Dear College Community,</p><p>I am delighted to share the progress and achievements of our institution this month. Our dedication to fostering academic excellence and character development continues to yield excellent results.</p><h3>Key Highlights:</h3><ul><li>100% placement rate for final year students</li><li>New research lab inaugurated</li><li>Student project wins national competition</li><li>Faculty publications in peer-reviewed journals</li></ul><p>We remain committed to providing world-class education and creating opportunities for our students to excel in their chosen fields.</p><p>Best regards,</p><p><strong>Principal Name</strong></p></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+
+        <!-- EVENTS SECTION -->
+        <div id="section-events" class="editor-section">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true"><h2>Latest Events & Updates</h2><h3>April 2026 Events</h3><p><strong>Tech Fest 2026</strong><br>Date: April 15-17<br>Location: Main Campus<br>An exciting 3-day festival showcasing student projects, workshops, and technical competitions.</p><p><strong>Industry Interaction Session</strong><br>Date: April 22<br>Guest: Senior Tech Leaders from Fortune 500 Companies<br>Topics: Latest tech trends, career guidance, and real-world applications.</p><p><strong>Sports Day Carnival</strong><br>Date: April 28<br>Departments competing across multiple sports and activities.</p><h3>Upcoming Highlights</h3><ul><li>Campus Recruitment Drive - May 5-8</li><li>Summer Internship Orientation - April 30</li><li>Alumni Meet & Networking - May 12</li></ul></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+
+        <!-- TRAINING SECTION -->
+        <div id="section-training" class="editor-section">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true"><h2>Training & Development</h2><h3>Student Training Achievements</h3><p><strong>Success Stories</strong></p><p><em>Arjun Kumar (CSE)</em> - Successfully completed certification in Cloud Computing from AWS and secured an internship at Tech Solutions Inc.</p><p><em>Priya Sharma (ECE)</em> - Completed VLSI Design course and contributed to two published research papers.</p><h3>Faculty Training Programs</h3><ul><li>Advanced Python Programming Workshop - Completed by 25 faculty members</li><li>Industry 4.0 and IoT - Attended by all engineering departments</li><li>Research Paper Writing - Organized by Academic Council</li></ul><h3>Upcoming Training Sessions</h3><ol><li>Data Science & Machine Learning - Starting May 5</li><li>Web Development with MERN Stack - May 10-15</li><li>Soft Skills & Communication - May 20 Onwards</li></ol><p>All students are encouraged to participate and enhance their skill sets!</p></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+
+        <!-- EDITORIAL SECTION -->
+        <div id="section-editorial" class="editor-section">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true"><h2>Editorial: Embracing Technology for Better Learning</h2><p><strong>By: Student Editorial Board</strong></p><p>In this month's editorial, we explore how technology is revolutionizing education and creating new opportunities for learners worldwide.</p><p>The integration of digital tools in classrooms has transformed the way we learn. From artificial intelligence to virtual classrooms, technology continues to bridge gaps and make education more accessible to everyone.</p><h3>Key Takeaways:</h3><p>As future engineers and professionals, we must embrace these technological advancements and use them responsibly to create a better world. Our college's commitment to providing cutting-edge infrastructure and training ensures that we are well-prepared for the challenges of tomorrow.</p><p>Let us make the most of the opportunities available and strive for excellence in all our endeavors.</p></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+
+        <!-- ADD PAGE SECTION -->
+        <div id="section-add_page" class="editor-section">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true"><h2>Achievements & Recognition</h2><h3>Student Achievements</h3><p>This month, we celebrate our outstanding students who have excelled academically and contributed to the college community.</p><p><strong>Best Project Award:</strong> "AI-Based Healthcare System" by Arun Vikram (Final Year CSE) - Awarded at the National Engineering Convention</p><p><strong>Scholarship Winners:</strong></p><ul><li>Merit-based Scholarship: 15 students</li><li>Sports Scholarship: 8 students</li><li>Social Welfare Scholarship: 12 students</li></ul><h3>Faculty Recognitions</h3><p><strong>Best Teacher Award:</strong> Dr. Rajesh Kumar for Outstanding Teaching Excellence</p><p><strong>Research Contributions:</strong></p><ol><li>One patent filed for "IoT-Based Smart Agriculture"</li><li>Three papers published in peer-reviewed journals</li><li>Two funded research projects</li></ol><h3>Contact & Feedback</h3><p>We welcome your suggestions and feedback. Please send any inquiries to <strong>newsletter@college.edu</strong></p><p>For more information, visit our website: <strong>www.college.edu</strong></p></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+    </div>
 
 </div>
 
-<!-- Editor Area -->
-<div class="editor">
+</body>
+</html>
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true" data-placeholder="Editorial content..."></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
 
-<form method="POST" enctype="multipart/form-data">
-
-<!-- COVER -->
-<div id="cover" class="section active">
-<h2>Cover Page</h2>
-<input name="title" placeholder="Newsletter Title">
-<input type="file" name="cover_image">
-</div>
-
-<!-- CHAIRMAN -->
-<div id="chairman" class="section">
-<h2>Chairman Message</h2>
-<textarea name="chairman"></textarea>
-</div>
-
-<!-- PRINCIPAL -->
-<div id="principal" class="section">
-<h2>Principal Message</h2>
-<textarea name="principal"></textarea>
-</div>
-
-<!-- CONTENTS -->
-<div id="contents" class="section">
-<h2>Contents</h2>
-<textarea name="contents"></textarea>
-</div>
-
-<!-- EVENTS -->
-<div id="events" class="section">
-<h2>Events</h2>
-<textarea name="events"></textarea>
-<input type="file" name="event_img">
-</div>
-
-<!-- TRAINING -->
-<div id="training" class="section">
-<h2>Training</h2>
-<textarea name="training"></textarea>
-</div>
-
-<!-- WORKSHOP -->
-<div id="workshop" class="section">
-<h2>Workshop</h2>
-<textarea name="workshop"></textarea>
-</div>
-
-<!-- ACHIEVEMENT -->
-<div id="achievement" class="section">
-<h2>Achievements</h2>
-<textarea name="achievement"></textarea>
-</div>
-
-<!-- SEMINAR -->
-<div id="seminar" class="section">
-<h2>Seminar</h2>
-<textarea name="seminar"></textarea>
-</div>
-
-<!-- DAKSHAA -->
-<div id="dakshaa" class="section">
-<h2>Dakshaa</h2>
-<textarea name="dakshaa"></textarea>
-</div>
-
-<!-- CELEBRATION -->
-<div id="celebration" class="section">
-<h2>Celebration</h2>
-<textarea name="celebration"></textarea>
-</div>
-
-<!-- EDITORIAL -->
-<div id="editorial" class="section">
-<h2>Editorial</h2>
-<textarea name="editorial"></textarea>
-</div>
-
-<!-- LAST -->
-<div id="last" class="section">
-<h2>Last Page Quote</h2>
-<textarea name="last"></textarea>
-</div>
-
-<button class="save">Save Newsletter</button>
-
-</form>
+        <!-- ADD PAGE SECTION -->
+        <div id="section-add_page" class="editor-section">
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <select class="font-select" onchange="format('fontName', this.value)">
+                        <option value="">Font Family</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                    </select>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="size-btn" onclick="decreaseFontSize()" title="Decrease font size">−</button>
+                    <input type="number" class="font-size-input" value="16" min="8" max="120">
+                    <button class="size-btn" onclick="increaseFontSize()" title="Increase font size">+</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button id="bold-btn" class="toolbar-btn" onclick="toggleFormat('bold', 'bold-btn')" title="Bold"><svg viewBox="0 0 24 24"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6V4z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6v-8z"/></svg></button>
+                    <button id="italic-btn" class="toolbar-btn" onclick="toggleFormat('italic', 'italic-btn')" title="Italic"><svg viewBox="0 0 24 24"><path d="M10 4h8M10 20h8M18 4l-8 16"/></svg></button>
+                    <button id="underline-btn" class="toolbar-btn" onclick="toggleFormat('underline', 'underline-btn')" title="Underline"><svg viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><path d="M4 21h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('justifyLeft')" title="Align Left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyCenter')" title="Align Center"><svg viewBox="0 0 24 24"><path d="M4 6h16M6 12h12M4 18h16"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('justifyRight')" title="Align Right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M4 18h16"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" onclick="format('insertUnorderedList')" title="Bullet List"><svg viewBox="0 0 24 24"><circle cx="4" cy="7" r="1"/><path d="M8 6h12M4 12h1M8 12h12M4 17h1M8 17h12"/></svg></button>
+                    <button class="toolbar-btn" onclick="format('insertOrderedList')" title="Numbered List"><svg viewBox="0 0 24 24"><path d="M4 6h1v2H4V6zM4 12h1v2H4v-2zM4 18h1v2H4v-2zM8 6h12M8 12h12M8 18h12"/></svg></button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="image-upload-btn" onclick="insertImage()" title="Insert Image">🖼️ Image</button>
+                </div>
+                <div class="toolbar-divider"></div>
+                <div class="toolbar-group">
+                    <button class="extra-btn" title="Effects">✨ Effects</button>
+                    <button class="extra-btn" title="Animate">🎬 Animate</button>
+                    <button class="extra-btn" title="Position">📍 Position</button>
+                </div>
+            </div>
+            <div class="editor-box" contenteditable="true" data-placeholder="Additional page content..."></div>
+            <button class="save-btn">💾 Save</button>
+        </div>
+    </div>
 
 </div>
 
